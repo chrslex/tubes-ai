@@ -42,7 +42,7 @@
     =>
     (retract ?valid)
     (printout t "Insert worst texture :" crlf)
-    (assert (radius-error-input(read)))
+    (assert (worst-texture-input(read)))
 )
 
 ; Masih bingung ini endingnya harus diapain untuk yang depth 2 tapi udah ke diagnose duluan dari yang lain.
@@ -51,3 +51,32 @@
     =>
     (retract ?valid)
 )
+
+;----------Depth 3----------
+(defrule ask-worst-concave-points
+    ?valid <- (worst-texture-input ?num&: (<= ?num 25.65))
+    =>
+    (retract ?valid)
+    (printout t "Insert worst concave points :" crlf)
+    (assert (worst-concave-points-input(read)))
+)
+
+(defrule ask-perimeter-error
+    ?valid <- (worst-texture-input ?num&: (> ?num 1.56))
+    =>
+    (retract ?valid)
+    (printout t "Insert perimeter error :" crlf)
+    (assert (perimeter-error-input(read)))
+)
+
+;----------Depth 4----------
+(defrule ask-mean-radius
+    ?valid <- (perimeter-error-input ?num&: (<= ?num 13.34))
+    =>
+    (retract ?valid)
+    (printout t "Insert mean radius :" crlf)
+    (assert (mean-radius-input(read)))
+)
+
+
+;----------Depth 5----------
