@@ -34,7 +34,7 @@
     =>
     (retract ?valid)
     (printout t "Insert mean texture :" crlf)
-    (assert (radius-error-input(read)))
+    (assert (mean-texture-input(read)))
 )
 
 (defrule ask-worst-texture
@@ -45,14 +45,23 @@
     (assert (worst-texture-input(read)))
 )
 
-; Masih bingung ini endingnya harus diapain untuk yang depth 2 tapi udah ke diagnose duluan dari yang lain.
-(defrule predicted
-    ?valid <- (worst-perimeter-input ?num&: (> ?num 114.45))
+;----------Depth 3----------
+(defrule ask-worst-texture-depth-three
+    ?valid <- (radius-error-input ?num&: (<= ?num 0.63))
     =>
     (retract ?valid)
+    (printout t "Insert worst texture :" crlf)
+    (assert (worst-texture-depth-three-input(read)))
 )
 
-;----------Depth 3----------
+(defrule ask-mean-smoothness
+    ?valid <- (radius-error-input ?num&: (> ?num 0.63))
+    =>
+    (retract ?valid)
+    (printout t "Insert mean smoothness :" crlf)
+    (assert (mean-smoothness-input(read)))
+)
+
 (defrule ask-worst-concave-points
     ?valid <- (worst-texture-input ?num&: (<= ?num 25.65))
     =>
@@ -70,6 +79,14 @@
 )
 
 ;----------Depth 4----------
+(defrule ask-worst-area
+    ?valid <- (worst-texture-depth-three-input ?num&: (> ?num 30.15))
+    =>
+    (retract ?valid)
+    (printout t "Insert worst area :" crlf)
+    (assert (worst-area-input(read)))
+)
+
 (defrule ask-mean-radius
     ?valid <- (perimeter-error-input ?num&: (<= ?num 13.34))
     =>
@@ -78,5 +95,45 @@
     (assert (mean-radius-input(read)))
 )
 
-
 ;----------Depth 5----------
+(defrule ask-mean-radius-depth-five
+    ?valid <- (worst-area-input ?num&: (> ?num 641.60))
+    =>
+    (retract ?valid)
+    (printout t "Insert mean radius :" crlf)
+    (assert (mean-radius-depth-five-input(read)))
+)
+
+;----------Depth 6----------
+(defrule ask-mean-texture-depth-six
+    ?valid <- (mean-radius-depth-five-input ?num&: (<= ?num 13.45))
+    =>
+    (retract ?valid)
+    (printout t "Insert mean texture :" crlf)
+    (assert (mean-texture-depth-six-input(read)))
+)
+
+;----------Final Answer----------
+(defrule decision_cancer
+    (or (mean-texture-input ?num&: (<= ?num 16.19))
+    (worst-texture-depth-three-input ?num&: (<= ?num 30.15))
+    (mean-smoothness-input ?num&: (<= ?num 0.09))
+    (worst-concave-points-input ?num&: (<= ?num 0.17))
+    (worst-area-input ?num&: (<= ?num 641.60))
+    (mean-radius-input ?num&: (> ?num 13.34))
+    (mean-radius-depth-five-input ?num&: (> ?num 13.45))
+    (mean-texture-depth-six-input ?num&: (> ?num 28.79)))
+    =>
+    (printout t "LU KANKER WOI" crlf)
+)
+
+(defrule decision_not_cancer
+    (or (worst-perimeter-input ?num&: (> ?num 114.45))
+    (mean-smoothness-input ?num&: (> ?num 0.09))
+    (worst-concave-points-input ?num&: (> ?num 0.17))
+    (perimeter-error-input ?num&: (> ?num 1.56))
+    (mean-radius-input ?num&: (<= ?num 13.34))
+    (mean-texture-depth-six-input ?num&: (<= ?num 28.79)))
+    =>
+    (printout t "SELAMAT LU GA KANKER WOI" crlf)
+)
