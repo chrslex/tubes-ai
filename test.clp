@@ -1,5 +1,6 @@
 ;----------Root Node----------
 (defrule ask-mean-concave-points
+    (declare (salience 10000))
     =>
     (printout t "Insert mean concave points : " crlf)
     (assert (concave-point-input(read)))
@@ -67,7 +68,7 @@
     =>
     (retract ?valid)
     (printout t "Insert concave points error :" crlf)
-    (assert (concave-point-error-input3(read)))
+    (assert (concave-point-error-input(read)))
 )
 
 (defrule ask-worst-concave-points
@@ -79,7 +80,7 @@
 )
 
 (defrule ask-perimeter-error
-    ?valid <- (worst-texture-input ?num&: (> ?num 1.56))
+    ?valid <- (worst-texture-input ?num&: (> ?num 25.65))
     =>
     (retract ?valid)
     (printout t "Insert perimeter error :" crlf)
@@ -96,7 +97,7 @@
 )
 
 (defrule ask-mean-radius
-    ?valid <- (perimeter-error-input ?num&: (<= ?num 13.34))
+    ?valid <- (perimeter-error-input ?num&: (<= ?num 1.56))
     =>
     (retract ?valid)
     (printout t "Insert mean radius :" crlf)
@@ -131,7 +132,7 @@
     (mean-radius-input ?num&: (> ?num 13.34))
     (mean-radius-depth-five-input ?num&: (> ?num 13.45))
     (mean-texture-depth-six-input ?num&: (> ?num 28.79))
-    (concave-point-error-input3 ?num&: (> ?num 0.01)))
+    (concave-point-error-input ?num&: (> ?num 0.01)))
     =>
     (printout t "Terdeteksi kanker" crlf)
 )
@@ -143,7 +144,7 @@
     (perimeter-error-input ?num&: (> ?num 1.56))
     (mean-radius-input ?num&: (<= ?num 13.34))
     (mean-texture-depth-six-input ?num&: (<= ?num 28.79))
-    (concave-point-error-input3 ?num&: (<= ?num 0.01)))
+    (concave-point-error-input ?num&: (<= ?num 0.01)))
     =>
     (printout t "Tidak terdeteksi kanker" crlf)
 )
