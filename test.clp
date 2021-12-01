@@ -62,6 +62,14 @@
     (assert (mean-smoothness-input(read)))
 )
 
+(defrule ask-concave-point-error
+    ?valid <- (mean-texture-input ?num&: (> ?num 16.19))
+    =>
+    (retract ?valid)
+    (printout t "Insert concave points error :" crlf)
+    (assert (concave-point-error-input3(read)))
+)
+
 (defrule ask-worst-concave-points
     ?valid <- (worst-texture-input ?num&: (<= ?num 25.65))
     =>
@@ -122,9 +130,10 @@
     (worst-area-input ?num&: (<= ?num 641.60))
     (mean-radius-input ?num&: (> ?num 13.34))
     (mean-radius-depth-five-input ?num&: (> ?num 13.45))
-    (mean-texture-depth-six-input ?num&: (> ?num 28.79)))
+    (mean-texture-depth-six-input ?num&: (> ?num 28.79))
+    (concave-point-error-input3 ?num&: (> ?num 0.01)))
     =>
-    (printout t "LU KANKER WOI" crlf)
+    (printout t "Terdeteksi kanker" crlf)
 )
 
 (defrule decision_not_cancer
@@ -133,7 +142,8 @@
     (worst-concave-points-input ?num&: (> ?num 0.17))
     (perimeter-error-input ?num&: (> ?num 1.56))
     (mean-radius-input ?num&: (<= ?num 13.34))
-    (mean-texture-depth-six-input ?num&: (<= ?num 28.79)))
+    (mean-texture-depth-six-input ?num&: (<= ?num 28.79))
+    (concave-point-error-input3 ?num&: (<= ?num 0.01)))
     =>
-    (printout t "SELAMAT LU GA KANKER WOI" crlf)
+    (printout t "Tidak terdeteksi kanker" crlf)
 )
